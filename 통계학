@@ -1,0 +1,52 @@
+include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <map>
+using namespace std;
+bool cmp(pair<int, int> v1, pair<int, int> v2) {
+	if (v1.second == v2.second) return v1.first < v2.first;
+	return v1.second > v2.second;
+}
+
+int main()
+{
+	int N,n;
+	double avg=0.0;
+	int range, mid,freq,sum;
+	sum = 0;
+	cin >> N;
+	vector<int> statistic;
+	vector<pair<int, int>>v;
+	map<int, int> m;
+	for (int i = 0; i < N; i++) {
+		cin >> n;
+		sum += n;
+		statistic.push_back(n);
+		m.insert(make_pair(n, 0));
+	}
+	sort(statistic.begin(), statistic.end());
+	range = statistic[statistic.size() - 1]-statistic[0];
+	mid = statistic[N / 2];
+	avg=(double)sum / (double)N;
+	if (avg >= 0) {
+		if (avg - (int)avg >= 0.5) avg = (int)avg + 1;
+		else avg=(int)avg;
+	}
+	else {
+		if (avg - (int)avg <= - 0.5) avg = (int)avg - 1;
+		else avg=(int)avg;
+	}
+	for (int i = 0; i < statistic.size(); i++) {
+		m[statistic[i]]++;
+	}
+	for (auto it = m.begin(); it != m.end();++it) {
+		v.push_back(make_pair(it->first,it->second));
+	}
+	sort(v.begin(), v.end(), cmp);
+	if (v.size() == 1) freq = v[0].first;
+    else if (v[0].second == v[1].second) freq = v[1].first;
+	else freq = v[0].first;
+	cout << avg << endl << mid << endl <<freq<< endl<<range;
+}
